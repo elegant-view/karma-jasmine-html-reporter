@@ -6,9 +6,9 @@ var initReporter = function(files,  baseReporterDecorator) {
 
   baseReporterDecorator(this);
 
-  files.unshift(createPattern(__dirname + '/lib/adapter.js'));
-  files.unshift(createPattern(__dirname + '/lib/html.jasmine.reporter.js'));
-  files.unshift(createPattern(__dirname + '/css/jasmine.css'));
+  files.push(createPattern(__dirname + '/css/jasmine.css'));
+  files.push(createPattern(__dirname + '/lib/html.jasmine.reporter.js'));
+  files.push(createPattern(__dirname + '/lib/adapter.js'));
 };
 
 initReporter.$inject = ['config.files',  'baseReporterDecorator'];
