@@ -91,6 +91,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         };
 
         this.specStarted = function(result) {
+            result.__time__ = Date.now();
             currentParent.addChild(result, "spec");
         };
 
@@ -100,7 +101,9 @@ jasmineRequire.HtmlReporter = function(j$) {
                 specsExecuted++;
             }
 
-            symbols.appendChild(createDom("li", {
+            symbols.appendChild(createDom(
+                "li",
+                {
                     className: result.status,
                     id: "spec_" + result.id,
                     title: result.fullName
@@ -202,8 +205,23 @@ jasmineRequire.HtmlReporter = function(j$) {
                         specSuiteId && (attributesObj["spec-suite-id"] = specSuiteId);
 
                         specListNode.appendChild(
-                            createDom("li", attributesObj,
-                                createDom("a", {href: specHref(resultNode.result)}, resultNode.result.description)
+                            createDom(
+                                "li",
+                                attributesObj,
+                                createDom(
+                                    'span',
+                                    {
+                                        style: 'margin-right:15px;color:#000'
+                                    },
+                                    (Date.now() - resultNode.result.__time__) + 'ms'
+                                ),
+                                createDom(
+                                    "a",
+                                    {
+                                        href: specHref(resultNode.result)
+                                    },
+                                    resultNode.result.description
+                                )
                             )
                         );
                     }
@@ -251,16 +269,16 @@ jasmineRequire.HtmlReporter = function(j$) {
             if(specEl){
                 var suiteId = specEl.getAttribute("spec-suite-id"),
                     parent = getParentById(specEl, "suite-" + suiteId);
-                    
+
 
                 if(parent && (parent.offsetTop > 0)){
                     var parentHeight = parent.offsetHeight;
 
-                    scroll = (parent.offsetTop + parentHeight) > windowInnerHeight ? 
-                        parent.offsetTop - windowInnerHeight/2 : 0; 
+                    scroll = (parent.offsetTop + parentHeight) > windowInnerHeight ?
+                        parent.offsetTop - windowInnerHeight/2 : 0;
                 }
-            }    
-            
+            }
+
             document.body.scrollTop = scroll;
         }
 
@@ -272,12 +290,12 @@ jasmineRequire.HtmlReporter = function(j$) {
                 if(parent && parent.parentNode){
                     if(parent.parentNode.id === id){
                         found = true;
-                    } 
-                    
-                    parent = parent.parentNode;    
+                    }
+
+                    parent = parent.parentNode;
                 }else{
                     found = true;
-                    parent = null;    
+                    parent = null;
                 }
             }
 
