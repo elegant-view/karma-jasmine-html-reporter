@@ -91,12 +91,13 @@ jasmineRequire.HtmlReporter = function(j$) {
         };
 
         this.specStarted = function(result) {
-            result.__time__ = Date.now();
             currentParent.addChild(result, "spec");
+            result.__time__ = Date.now();
         };
 
         var failures = [];
         this.specDone = function(result) {
+            result.__time__ = Date.now() - result.__time__;
             if (result.status != "disabled") {
                 specsExecuted++;
             }
@@ -213,7 +214,7 @@ jasmineRequire.HtmlReporter = function(j$) {
                                     {
                                         style: 'margin-right:15px;color:#000'
                                     },
-                                    (Date.now() - resultNode.result.__time__) + 'ms'
+                                    resultNode.result.__time__ + 'ms'
                                 ),
                                 createDom(
                                     "a",
